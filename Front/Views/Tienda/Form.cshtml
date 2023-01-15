@@ -1,0 +1,227 @@
+﻿@model Entitys.Tienda
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Form", "Tienda", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <h3 class="text-center">Datos de la tienda</h3>
+                <div class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.HiddenFor(model => model.IdTienda)
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+
+                                <div class="col">
+                                    @Html.LabelFor(model => model.Sucursal)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        @Html.TextBoxFor(model => model.Sucursal, new { @class = "form-control"})
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Sucursal)
+                                </div>
+
+                                <div class="col">
+                                    @Html.LabelFor(model => model.DireccionTienda.Colonia.Municipio.Estado.Pais)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-globe-americas"></i></span>
+                                        @Html.DropDownListFor(model => model.DireccionTienda.Colonia.Municipio.Estado.Pais.IdPais, new SelectList(Model.DireccionTienda.Colonia.Municipio.Estado.Pais.Paises, "IdPais", "Nombre"), "Selecciona una opción", new { id = "ddlPais", @class = "form-control" })
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.DireccionTienda.Colonia.Municipio.Estado.Pais.IdPais)
+                                </div>
+
+                                @Html.LabelFor(model => model.DireccionTienda.Colonia.Municipio.Estado)
+                                <div class="input-group">
+
+                                    <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+                                    @if (Model.DireccionTienda.Colonia.Municipio.Estado.Estados == null)
+                                    {
+                                        @Html.DropDownListFor(model => model.DireccionTienda.Colonia.Municipio.Estado.IdEstado, new SelectList(string.Empty, "Value", "Text"), "Seleciona un grupo", htmlAttributes: new { id = "ddlEstado", @class = "form-control" })
+                                    }
+
+                                    else
+                                    {
+                                        @Html.DropDownListFor(model => model.DireccionTienda.Colonia.Municipio.Estado.IdEstado, new SelectList(Model.DireccionTienda.Colonia.Municipio.Estado.Estados, "IdEstado", "Nombre"), "Selecione un estado", htmlAttributes: new { id = "ddlEstado", @class = "form-control" })
+                                    }
+                                </div>
+
+                                @Html.LabelFor(model => model.DireccionTienda.Colonia.Municipio)
+                                <div class="input-group">
+
+                                    <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                    @if (Model.DireccionTienda.Colonia.Municipio.Municipios == null)
+                                    {
+                                        @Html.DropDownListFor(model => model.DireccionTienda.Colonia.Municipio.IdMunicipio, new SelectList(string.Empty, "Value", "Text"), "Selecciona un Municipio", htmlAttributes: new { id = "ddlMunicipio", @class = "form-control" })
+
+                                    }
+                                    else
+                                    {
+
+                                        @Html.DropDownListFor(model => model.DireccionTienda.Colonia.Municipio.IdMunicipio, new SelectList(Model.DireccionTienda.Colonia.Municipio.Municipios, "IdMunicipio", "Nombre"), "Selecciona un Municipio", htmlAttributes: new { id = "ddlMunicipio", @class = "form-control" })
+                                    }
+                                </div>                         
+
+                            </div>
+
+                            <div class="col">
+
+                                @Html.LabelFor(model => model.DireccionTienda.Colonia)
+                                <div class="input-group">
+
+                                    <span class="input-group-text"><i class="bi bi-geo-fill"></i></span>
+                                    @if (Model.DireccionTienda.Colonia.Colonias == null)
+                                    {
+                                        @Html.DropDownListFor(model => model.DireccionTienda.Colonia.IdColonia, new SelectList(string.Empty, "Value", "Text"), "Selecciona una Colonia", htmlAttributes: new { id = "ddlColonia", @class = "form-control" })
+
+                                    }
+                                    else
+                                    {
+
+                                        @Html.DropDownListFor(model => model.DireccionTienda.Colonia.IdColonia, new SelectList(Model.DireccionTienda.Colonia.Colonias, "IdColonia", "Nombre"), "Selecciona una Colonia", htmlAttributes: new { id = "ddlColonia", @class = "form-control" })
+                                    }
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.HiddenFor(model => model.DireccionTienda.IdDireccionTienda)
+                                </div>
+
+                                <div class="col">
+                                    @Html.LabelFor(model => model.DireccionTienda.Calle)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-signpost"></i></span>
+                                        @Html.TextBoxFor(model => model.DireccionTienda.Calle, new { @class = "form-control"})
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.DireccionTienda.Calle)
+                                </div>                               
+
+                                <div class="col">
+                                    @Html.LabelFor(model => model.DireccionTienda.NumeroExterior)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-house-add-fill"></i></span>
+                                        @Html.TextBoxFor(model => model.DireccionTienda.NumeroExterior, new { @class = "form-control" })
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.DireccionTienda.NumeroExterior)
+                                </div>
+
+                                <div class="col">
+                                    @Html.LabelFor(model => model.DireccionTienda.NumeroInterior)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-house-add"></i></span>
+                                        @Html.TextBoxFor(model => model.DireccionTienda.NumeroInterior, new { @class = "form-control"})
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.DireccionTienda.NumeroInterior)
+                                </div>
+                            </div>
+                        </div>
+                    </div>                  
+                    <div class="container mt-5">
+                        <div class="row justify-content-md-center">
+                            <div class="col col-lg-2">
+                                <input type="submit" value="Guardar" class="btn btn-success" />
+
+                                @Html.ActionLink("Regresar", "GetAll", "Tienda", htmlAttributes: new { @class = "btn btn-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ddlPais").change(function () {
+                $("#ddlEstado").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetEstado")',
+                    dataType: 'json',
+                    data: { IdPais: $("#ddlPais").val() },
+                    success: function (estados) {
+                        $("#ddlEstado").append('<option value="0">' + 'Seleccione una opción' + '</option>');
+                        $.each(estados, function (i, estados) {
+                            $("#ddlEstado").append('<option value="'
+                                + estados.idEstado + '">'
+                                + estados.nombre + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed.' + ex);
+                    }
+                });
+            })
+        })
+        $(document).ready(function () {
+            $("#ddlEstado").change(function () {
+                $("#ddlMunicipio").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetMunicipio")',
+                    dataType: 'json',
+                    data: { IdEstado: $("#ddlEstado").val() },
+                    success: function (municipios) {
+                        $("#ddlMunicipio").append('<option value="0">' + 'Seleccione una opción' + '</option>');
+                        $.each(municipios, function (i, municipios) {
+                            $("#ddlMunicipio").append('<option value="'
+                                + municipios.idMunicipio + '">'
+                                + municipios.nombre + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed.' + ex);
+                    }
+                });
+            })
+        })
+        $(document).ready(function () {
+            $("#ddlMunicipio").change(function () {
+                $("#ddlColonia").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetColonia")',
+                    dataType: 'json',
+                    data: { IdMunicipio: $("#ddlMunicipio").val() },
+                    success: function (colonias) {
+                        $("#ddlColonia").append('<option value="0">' + 'Seleccione una opción' + '</option>');
+                        $.each(colonias, function (i, colonias) {
+                            $("#ddlColonia").append('<option value="'
+                                + colonias.idColonia + '">'
+                                + colonias.nombre + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed.' + ex);
+                    }
+                });
+            })
+        })
+    </script>
+}
+

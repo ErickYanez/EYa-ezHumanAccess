@@ -1,0 +1,121 @@
+﻿@model Entitys.Tienda
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Lista de Tiendas</h2>
+    <hr />
+
+    <div class="row">
+        <div style="float:right">
+            @Html.ActionLink("Agregar", "Form", "Tienda", htmlAttributes: new { @class = "btn btn-success" })
+        </div>
+    </div>
+     @using (Html.BeginForm("GetAll", "Tienda", FormMethod.Post, new { enctype = "multipart/form-data" }))
+     {
+        <div class="container mt-5">
+            <div class="row">
+                <h5>Buscar Tienda</h5>
+                <div class="col">
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(model => model.Sucursal, new { @class = "form-control", @placeholder = "Sucursal" })
+
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col col-lg-2">
+                                <input type="submit" value="Buscar" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     }
+</div>
+
+<div class="d-flex justify-content-around">
+    <div class="row mt-5">
+        <table class="table table-striped" id="tblCliente">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        IdTienda
+                    </th>
+                    <th>
+                        Sucursal
+                    </th>
+                    <th>
+                        Direccion
+                    </th>
+                    <th>
+                        Editar
+                    </th>
+                    <th>
+                        Eliminar
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="table-info">
+                @foreach (Entitys.Tienda tienda in Model.Tiendas)
+                {
+                    <tr>
+                        <td>
+                            @tienda.IdTienda
+                        </td>
+                        <td>
+                            @tienda.Sucursal 
+                        </td>
+                        <td>
+                            @tienda.DireccionTienda.Calle @tienda.DireccionTienda.NumeroInterior @tienda.DireccionTienda.NumeroExterior @tienda.DireccionTienda.Colonia.Nombre @tienda.DireccionTienda.Colonia.CodigoPostal @tienda.DireccionTienda.Colonia.Municipio.Nombre @tienda.DireccionTienda.Colonia.Municipio.Estado.Pais.Nombre
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-primary bi-pencil-square" href="@Url.Action("Form", "Tienda", new { IdTienda = tienda.IdTienda})"></a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-danger bi-trash" href="@Url.Action("Delete", "Tienda", new { IdTienda = tienda.IdTienda})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tblCliente').DataTable({
+                searching: false,
+                "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: ['_all'],
+                        className: 'mdc-data-table__cell',
+                    },
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+                },
+            });
+        });
+
+    </script>
+
+}
+

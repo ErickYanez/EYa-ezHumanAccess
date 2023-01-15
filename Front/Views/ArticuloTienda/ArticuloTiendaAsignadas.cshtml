@@ -1,0 +1,100 @@
+﻿@model Entitys.ArticuloTienda
+@{
+    ViewData["Title"] = "ArticuloTiendaAsignadas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Lista de Articulos de la tienda</h2>
+    <hr />
+
+    <div class="row">
+        <div style="float:right">
+            <a class="btn btn-success" href="@Url.Action("ArticuloTiendaNoAsignadas", "ArticuloTienda", new { IdArticulo = Model.Tienda.IdTienda})">Agregar</a>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-around">
+    <div class="row mt-5">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        IdArticulo
+                    </th>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Codigo
+                    </th>
+                    <th>
+                        Descripcion
+                    </th>
+                    <th>
+                        Precio
+                    </th>
+                    <th>
+                        Imagen
+                    </th>
+                    <th>
+                        Stock
+                    </th>
+                    <th>
+                        Eliminar
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="table-info">
+                @foreach (Entitys.ArticuloTienda articuloTienda in Model.ArticuloTiendas)
+                {
+                    <tr>
+                        <td>
+                            @articuloTienda.Articulo.IdArticulo
+                        </td>
+                        <td>
+                            @articuloTienda.Articulo.Nombre
+                        </td>
+                        <td>
+                            @articuloTienda.Articulo.Codigo
+                        </td>
+                        <td>
+                            @articuloTienda.Articulo.Descripcion
+                        </td>
+                        <td>
+                            @articuloTienda.Articulo.Precio
+                        </td>
+                        <td>
+                            @if (articuloTienda.Articulo.Imagen != null)
+                            {
+                                var imagenSRC = $"data:image;base64,{articuloTienda.Articulo.Imagen}";
+                                <img src='@imagenSRC' height='150px' width='150px'>
+                            }
+                            else
+                            {
+                                <img src="~/Image/sin logo.jpg" height='150px' width='150px'>
+
+                            }
+                        </td>
+                        <td>
+                            @articuloTienda.Articulo.Stock
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-danger bi-trash" href="@Url.Action("Delete", "ArticuloTienda", new { IdArticuloTienda = articuloTienda.IdArticuloTienda})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-2">
+            @Html.ActionLink("Regresar", "GetAll", "ArticuloTienda", htmlAttributes: new { @class = "btn btn-danger" })
+        </div>
+    </div>
+</div>
+

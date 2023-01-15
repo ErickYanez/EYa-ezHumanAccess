@@ -1,0 +1,162 @@
+﻿@model Entitys.Cliente
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Lista de Clientes</h2>
+    <hr />
+
+    <div class="row">
+        <div style="float:right">
+            @Html.ActionLink("Agregar", "Form", "Cliente", htmlAttributes: new { @class = "btn btn-success" })
+        </div>
+    </div>
+     @using (Html.BeginForm("GetAll", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
+     {
+        <div class="container mt-5">
+            <div class="row">
+                <h5>Buscar Cliente</h5>
+                <div class="col">
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder = "Nombre" })
+
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @placeholder = "ApellidoPaterno" })
+
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col col-lg-2">
+                                <input type="submit" value="Buscar" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     }
+</div>
+
+<div class="d-flex justify-content-around">
+    <div class="row mt-5">
+        <table class="table table-striped" id="tblCliente">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        IdCliente
+                    </th>
+                    <th>
+                        Nombre Completo
+                    </th>
+                    <th>
+                        Direccion
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Password
+                    </th>
+                    <th>
+                        Imagen
+                    </th>
+                    <th>
+                        Rol
+                    </th>
+                    <th>
+                        Editar
+                    </th>
+                    <th>
+                        Eliminar
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="table-info">
+                @foreach (Entitys.Cliente cliente in Model.Clientes)
+                {
+                    <tr>
+                        <td>
+                            @cliente.IdCliente
+                        </td>
+                        <td>
+                            @cliente.Nombre @cliente.ApellidoPaterno @cliente.ApellidoMaterno
+                        </td>
+                        <td>
+                            @cliente.DireccionCliente.Calle @cliente.DireccionCliente.NumeroExterior @cliente.DireccionCliente.NumeroInterior @cliente.DireccionCliente.Colonia.Nombre @cliente.DireccionCliente.Colonia.CodigoPostal @cliente.DireccionCliente.Colonia.Municipio.Nombre @cliente.DireccionCliente.Colonia.Municipio.Estado.Pais.Nombre
+                        </td>
+                        <td>
+                            @cliente.Usuario.Email
+                        </td>
+                        <td>
+                            @cliente.Usuario.Password
+                        </td>
+                        <td>
+                            @if (cliente.Usuario.Imagen != null)
+                            {
+                                var imagenSRC = $"data:image;base64,{cliente.Usuario.Imagen}";
+                                <img src='@imagenSRC' height='150px' width='150px'>
+                            }
+                            else
+                            {
+                                <img src="~/Image/sin usuario.png" height='150px' width='150px'>
+
+                            }
+                        </td>
+                        <td>
+                            @cliente.Usuario.Rol.Nombre
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-primary bi-pencil-square" href="@Url.Action("Form", "Cliente", new { IdCliente = cliente.IdCliente})"></a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-danger bi-trash" href="@Url.Action("Delete", "Cliente", new { IdCliente = cliente.IdCliente})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tblCliente').DataTable({
+                searching: false,
+                "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: ['_all'],
+                        className: 'mdc-data-table__cell',
+                    },
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+                },
+            });
+        });
+
+    </script>
+
+}
+

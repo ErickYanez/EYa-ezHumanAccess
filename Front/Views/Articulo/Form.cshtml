@@ -1,0 +1,181 @@
+﻿@model Entitys.Articulo
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Form", "Articulo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <h3 class="text-center">Datos del Articulo</h3>
+                <div class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.HiddenFor(model => model.IdArticulo)
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+
+                                <div class="col">
+                                    @Html.LabelFor(model => model.Nombre)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id="nombre", @onkeypress = "return SoloLetras(event, 'lblNombre')"})
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Nombre)
+                                    @Html.Label("", null, new {@id = "lblNombre"})
+                                </div>
+
+                                <div class="col">
+                                    @Html.LabelFor(model => model.Codigo)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-qr-code"></i></span>
+                                        @Html.TextBoxFor(model => model.Codigo, new { @class = "form-control",@onkeypress = "return SoloNumeros(event, 'lblCodigo')"})
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Codigo)
+                                    @Html.Label("", null, new {@id = "lblCodigo"})
+                                </div>
+
+                                <div class="col">
+                                    @Html.LabelFor(model => model.Descripcion)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control"})
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Descripcion)
+                                </div>
+
+                            </div>
+
+                            <div class="col">
+                                <div class="col">
+                                    @Html.LabelFor(model => model.Precio)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-cash-coin"></i></span>
+                                        @Html.TextBoxFor(model => model.Precio, new { @class = "form-control",@onkeypress = "return SoloNumeros(event, 'lblPrecio')"})
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Precio)
+                                    @Html.Label("", null, new {@id = "lblPrecio"})
+                                </div>        
+                                
+                                <div class="col">
+                                    @Html.LabelFor(model => model.Stock)
+                                    <div class="input-group">
+
+                                        <span class="input-group-text"><i class="bi bi-box2"></i></span>
+                                        @Html.TextBoxFor(model => model.Stock, new { @class = "form-control",@onkeypress = "return SoloNumeros(event, 'lblStock')"})
+
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Stock)
+                                    @Html.Label("", null, new {@id = "lblStock"})
+                                </div>                                    
+                            </div>
+
+                            <div class="col">
+                                <div class="input-group">
+                                    @Html.LabelFor(model => model.Imagen)
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-card-image"></i></span>
+                                        <input accept=".png, .jpg, .jpeg" , id="inputImage" type='file' class="form-control" name="FileImage" onchange="readImage(this);  " />
+                                    </div>
+                                    @if (Model.Imagen != null)
+                                    {
+                                        var imagenSRC = $"data:image;base64,{Model.Imagen}";
+                                        <img id="ImagenPreview" src='@imagenSRC' class="rounded img-thumbnail" alt='Category Image' height='200px' width='200px'>
+                                    }
+                                    else
+                                    {
+                                        <img id="ImagenPreview" src="~/Image/sin logo.jpg" class="rounded img-thumbnail" alt='Category Image' height='200px' width='200px' required>
+                                    }
+                                </div>
+
+                                @Html.HiddenFor(model => model.Imagen)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col col-lg-2">
+                                <input type="submit" value="Guardar" class="btn btn-success" />
+
+                                @Html.ActionLink("Regresar", "GetAll", "Articulo", htmlAttributes: new { @class = "btn btn-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script type="text/javascript">     
+        function readImage(imagen) {
+            var fileName = imagen.value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                if (imagen.files && imagen.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = (e) => {
+                        $("#ImagenPreview").attr("src", e.target.result);
+                    };
+                    reader.readAsDataURL(imagen.files[0]);
+                }
+            } else {
+                alert("This is not an allowed file type. \nOnly jpg / jpeg and png files are allowed!.");
+                $('#inputImage').val(null);
+                $("#ImagenPreview").attr("src", "~/Image/sin usuario.jpg");
+            }
+        }
+        function SoloLetras(e, controlId) {
+            var regex = /^[a-zA-Z]+$/;
+            var letra = e.key;
+            if (regex.test(letra)) {
+                $("#nombre").css({ "color": "green" });
+                $("#apellidop").css({ "color": "green" });
+                $("#apellidom").css({ "color": "green" });
+                $('#' + controlId).text("");
+                return true;
+            }
+            else {
+                $("#" + controlId).text("Solo se aceptan letras");
+                $('#' + controlId).css({ "color": "red" });
+                return false;
+            }
+        }
+        function SoloNumeros(e, controlId) {
+            var caracter = e.key;
+            if (!/^[0-9]/g.test(caracter)) {
+                $('#' + controlId).text("Solo se aceptan numeros");
+                $('#' + controlId).css({ "color": "red" });
+                return false;
+            }
+            else {
+                $('#' + controlId).text("");
+                return true;
+            }
+        }       
+    </script>
+}
+

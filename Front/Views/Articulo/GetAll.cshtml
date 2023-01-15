@@ -1,0 +1,153 @@
+﻿@model Entitys.Articulo
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Lista de Articulos</h2>
+    <hr />
+
+    <div class="row">
+        <div style="float:right">
+            @Html.ActionLink("Agregar", "Form", "Articulo", htmlAttributes: new { @class = "btn btn-success" })
+        </div>
+    </div>
+     @using (Html.BeginForm("GetAll", "Articulo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+     {
+        <div class="container mt-5">
+            <div class="row">
+                <h5>Buscar Articulo</h5>
+                <div class="col">
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder = "Nombre" })
+
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col col-lg-2">
+                                <input type="submit" value="Buscar" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     }
+</div>
+
+<div class="d-flex justify-content-around">
+    <div class="row mt-5">
+        <table class="table table-striped" id="tblCliente">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        IdArticulo
+                    </th>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Codigo
+                    </th>
+                    <th>
+                        Descripcion
+                    </th>
+                    <th>
+                        Precio
+                    </th>
+                    <th>
+                        Imagen
+                    </th>
+                    <th>
+                        Stock
+                    </th>
+                    <th>
+                        Editar
+                    </th>
+                    <th>
+                        Eliminar
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="table-info">
+                @foreach (Entitys.Articulo articulo in Model.Articulos)
+                {
+                    <tr>
+                        <td>
+                            @articulo.IdArticulo
+                        </td>
+                        <td>
+                            @articulo.Nombre 
+                        </td>
+                        <td>
+                            @articulo.Codigo
+                        </td>
+                        <td>
+                            @articulo.Descripcion
+                        </td>
+                        <td>
+                            @articulo.Precio
+                        </td>
+                        <td>
+                            @if (articulo.Imagen != null)
+                            {
+                                var imagenSRC = $"data:image;base64,{articulo.Imagen}";
+                                <img src='@imagenSRC' height='150px' width='150px'>
+                            }
+                            else
+                            {
+                                <img src="~/Image/sin logo.jpg" height='150px' width='150px'>
+
+                            }
+                        </td>
+                        <td>
+                            @articulo.Stock
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-primary bi-pencil-square" href="@Url.Action("Form", "Articulo", new { IdArticulo = articulo.IdArticulo})"></a>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-danger bi-trash" href="@Url.Action("Delete", "Articulo", new { IdArticulo = articulo.IdArticulo})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tblCliente').DataTable({
+                searching: false,
+                "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: ['_all'],
+                        className: 'mdc-data-table__cell',
+                    },
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+                },
+            });
+        });
+
+    </script>
+
+}
+

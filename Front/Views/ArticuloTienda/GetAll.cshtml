@@ -1,0 +1,85 @@
+﻿@model Entitys.Tienda
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Lista de Tiendas</h2>
+    <hr />
+</div>
+
+
+<div class="d-flex justify-content-around">
+    <div class="row mt-5">
+        <table class="table table-striped" id="tblCliente">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        Articulos
+                    </th>
+                    <th>
+                        IdTienda
+                    </th>
+                    <th>
+                        Sucursal
+                    </th>
+                    <th>
+                        Direccion
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="table-info">
+                @foreach (Entitys.Tienda tienda in Model.Tiendas)
+                {
+                    <tr>
+                        <td class="text-center">
+                            <a class="btn btn-primary" href="@Url.Action("ArticuloTiendaAsignadas", "ArticuloTienda", new { IdTienda = tienda.IdTienda})">Seleccionar</a>
+                        </td>
+                        <td>
+                            @tienda.IdTienda
+                        </td>
+                        <td>
+                            @tienda.Sucursal
+                        </td>
+                        <td>
+                            @tienda.DireccionTienda.Calle @tienda.DireccionTienda.NumeroInterior @tienda.DireccionTienda.NumeroExterior @tienda.DireccionTienda.Colonia.Nombre @tienda.DireccionTienda.Colonia.CodigoPostal @tienda.DireccionTienda.Colonia.Municipio.Nombre @tienda.DireccionTienda.Colonia.Municipio.Estado.Pais.Nombre
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tblCliente').DataTable({
+                searching: false,
+                "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: ['_all'],
+                        className: 'mdc-data-table__cell',
+                    },
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+                },
+            });
+        });
+
+    </script>
+
+}
+
