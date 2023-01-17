@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid">
+<div class="container-fluid mt-5">
     <div class="row">
         <div class="col-md-12">
             @using (Html.BeginForm("Form", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -245,15 +245,13 @@
                             </div>
                         </div>
 
-                        <div class="container">
-                            <div class="row justify-content-md-center">
-                                <div class="col col-lg-2">
-                                    <input type="submit" value="Guardar" class="btn btn-success" />
+                    <div class="row justify-content-md-center mt-4">
+                        <div class="col col-lg-2">
+                            <input type="submit" value="Guardar" class="btn btn-success" />
 
-                                @Html.ActionLink("Regresar", "GetAll", "Cliente", htmlAttributes: new { @class = "btn btn-danger" })
-                                </div>
-                            </div>
+                            @Html.ActionLink("Regresar", "GetAll", "Cliente", htmlAttributes: new { @class = "btn btn-danger" })
                         </div>
+                    </div>
                     </div>
             }
         </div>

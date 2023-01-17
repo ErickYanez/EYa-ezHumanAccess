@@ -4,7 +4,7 @@
 <script src="http://bootboxjs.com/bootbox.js"></script>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-<div class="modal" tabindex="-1" role="dialog" id="modalValidacion">
+<div class="modal" tabindex="-1" role="dialog" id="Modal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,13 +17,16 @@
                 <h5>@ViewBag.Message</h5>
             </div>
             <div class="modal-footer">
+                @*@Html.ActionLink("Regresar", "GetAll", "Materia", htmlAttributes: new { @class = "btn btn-danger" })*@
+                @Html.ActionLink("Seguir Comprando", "Index", "Home", htmlAttributes: new { @class = "btn btn-success" })
+                @Html.ActionLink("Ir a mi bolsa", "Compra", "Home", htmlAttributes: new { @class = "btn btn-success" })
 
-                @Html.ActionLink("Regresar", "GetAll", "Tienda", htmlAttributes: new { @class = "btn btn-success" })
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    $('#modalValidacion').modal();
+    $('#Modal').modal();
 </script>
+

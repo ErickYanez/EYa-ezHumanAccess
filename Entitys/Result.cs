@@ -7,5 +7,6 @@
         public Exception Ex{ get; set; }
         public List<Object> Objects { get; set; }
         public Object Object { get; set; }
+        public string Cantidad { get; set; }
     }
 }

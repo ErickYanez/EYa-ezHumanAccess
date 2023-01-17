@@ -1,16 +1,21 @@
-﻿using Front.Models;
+﻿using Entitys;
+using Front.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace Front.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IConfiguration _configuration;
+
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+        public HomeController(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
         {
-            _logger = logger;
+            _configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
@@ -76,7 +81,7 @@ namespace Front.Controllers
             if (HttpContext.Session.GetString("Articulo") != null)
             {
                 ViewBag.Message = "Se ha agregado el articulo a tu carrito!";
-                return PartialView("Modal");
+                return PartialView("Modal");                
             }
             else
             {
@@ -88,7 +93,7 @@ namespace Front.Controllers
         [HttpGet]
         public ActionResult Compra(Entitys.ClienteArticulo clienteArticulo)
         {
-            decimal costoTotal = 0;
+            int costoTotal = 0;
             if (HttpContext.Session.GetString("Articulo") == null)
             {
                 return View();
@@ -97,9 +102,13 @@ namespace Front.Controllers
             {
                 clienteArticulo.ClienteArticulos = new List<object>();
                 GetCarrito(clienteArticulo);
-                clienteArticulo.Total = costoTotal;
-            }
+                foreach(Entitys.Articulo articulo in clienteArticulo.ClienteArticulos)
+                {
+                    costoTotal += articulo.SubTotal;
+                }
 
+            }
+            ViewBag.total = costoTotal;
             return View(clienteArticulo);
         }
         public Entitys.ClienteArticulo GetCarrito(Entitys.ClienteArticulo clienteArticulo)
@@ -112,6 +121,31 @@ namespace Front.Controllers
                 clienteArticulo.ClienteArticulos.Add(objArticulo);
             }
             return clienteArticulo;
+        }
+
+        public IActionResult Eliminar(int IdArticulo)
+        {
+            bool existe = false;
+            var indice = 0;
+            Entitys.ClienteArticulo clienteArticulo = new Entitys.ClienteArticulo();
+            clienteArticulo.ClienteArticulos = new List<object>();
+            GetCarrito(clienteArticulo);
+            foreach (Entitys.Articulo articulo in clienteArticulo.ClienteArticulos)
+            {
+                if (articulo.IdArticulo == IdArticulo)
+                {
+                    indice = clienteArticulo.ClienteArticulos.IndexOf(articulo);
+                    existe = true;
+                }
+            }
+            if (existe)
+            {
+                clienteArticulo.ClienteArticulos.RemoveAt(indice);
+                HttpContext.Session.SetString("Articulo", JsonConvert.SerializeObject(clienteArticulo.ClienteArticulos));
+                ViewBag.Message = "Se ha eliminado el articulo";
+            }
+
+            return PartialView("Modal");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

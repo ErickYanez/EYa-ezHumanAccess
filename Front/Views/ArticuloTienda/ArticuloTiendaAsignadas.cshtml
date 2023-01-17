@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
+<div class="container mt-5">
     <h2>Lista de Articulos de la tienda</h2>
     <hr />
 
@@ -33,7 +33,7 @@
 <div class="d-flex justify-content-around">
     <div class="row mt-5">
         <table class="table table-striped">
-            <thead class="table-dark">
+            <thead class="table-success">
                 <tr>
                     <th>
                         IdArticulo
@@ -62,7 +62,7 @@
                 </tr>
             </thead>
 
-            <tbody class="table-info">
+            <tbody class="table-light">
                 @foreach (Entitys.ArticuloTienda articuloTienda in Model.ArticuloTiendas)
                 {
                     <tr>

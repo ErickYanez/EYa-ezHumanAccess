@@ -65,12 +65,13 @@ CREATE TABLE DireccionTienda
 
 CREATE TABLE Articulo
 (
-	IdArticulo INT IDENTITY(1,1) PRIMARY KEY,
+	IdArticulo INT IDENTITY(1,1) PRIMARY KEY,	
 	Codigo INT,
 	Descripcion VARCHAR(50),
 	Precio DECIMAL,
 	Imagen VARCHAR(MAX),
-	Stock INT
+	Stock INT,
+	Nombre VARCHAR(50)
 )
 
 CREATE TABLE ArticuloTienda
@@ -99,8 +100,8 @@ CREATE TABLE Usuario
 (
 	IdUsuario INT IDENTITY(1,1) PRIMARY KEY,
 	Imagen VARCHAR(MAX),
-	Email VARCHAR(150),
-	Password VARCHAR(50),
+	Email VARCHAR(150) UNIQUE,
+	Password VARCHAR(50) UNIQUE,
 	IdRol INT FOREIGN KEY REFERENCES Rol(IdRol),
 	IdCliente INT FOREIGN KEY REFERENCES Cliente(IdCliente)
 )
@@ -163,11 +164,7 @@ INSERT INTO [dbo].[Usuario]([Imagen],[Email],[Password],[IdRol],[IdCliente])VALU
 INSERT INTO [dbo].[Usuario]([Imagen],[Email],[Password],[IdRol],[IdCliente])VALUES(NULL,'vsuarez2d@gmail.com','Victor9856',2,3)
 GO
 
-ALTER TABLE Articulo 
-ADD Nombre VARCHAR(50) NULL
-GO
-
-ALTER PROCEDURE ClienteAdd
+CREATE PROCEDURE ClienteAdd
 @Nombre VARCHAR(50),
 @ApellidoPaterno VARCHAR(50),
 @ApellidoMaterno VARCHAR(50),
@@ -213,7 +210,7 @@ AS
            ,@@IDENTITY)
 GO
 
-ALTER PROCEDURE ClienteGetAll 
+CREATE PROCEDURE ClienteGetAll '',''
 @Nombre VARCHAR(50),
 @ApellidoPaterno VARCHAR(50)
 AS
@@ -250,7 +247,7 @@ AS
 	WHERE Cliente.Nombre LIKE '%' + @Nombre + '%' AND Cliente.ApellidoPaterno LIKE '%' + @ApellidoPaterno
 GO
 
-ALTER PROCEDURE ClienteGetById 
+CREATE PROCEDURE ClienteGetById 
 @IdCliente INT
 AS
 	SELECT Cliente.[IdCliente]
@@ -478,7 +475,7 @@ AS
 	DELETE FROM [dbo].[Usuario]
 GO
 
-ALTER PROCEDURE ArticuloAdd
+CREATE PROCEDURE ArticuloAdd
 @Nombre VARCHAR(50),
 @Codigo INT,
 @Descripcion VARCHAR(50),
@@ -512,6 +509,8 @@ AS
       ,[Precio]
       ,[Imagen]
       ,[Stock]
+	  ,0 AS IdTienda
+	  ,'' AS Sucursal
   FROM [dbo].[Articulo]
   WHERE Articulo.Nombre LIKE '%' + @Nombre + '%' 
 GO
@@ -526,11 +525,13 @@ AS
       ,[Precio]
       ,[Imagen]
       ,[Stock]
+	   ,0 AS IdTienda
+	  ,'' AS Sucursal
   FROM [dbo].[Articulo]
   WHERE IdArticulo = @IdArticulo
 GO
 
-ALTER PROCEDURE ArticuloUpdate
+CREATE PROCEDURE ArticuloUpdate
 @IdArticulo INT,
 @Nombre VARCHAR(50),
 @Codigo INT,
@@ -556,7 +557,7 @@ AS
       WHERE IdArticulo = @IdArticulo
 GO
 
-ALTER PROCEDURE ArticulosTiendaAgregados
+CREATE PROCEDURE ArticulosTiendaAgregados 1
 @IdTienda INT
 AS
 	SELECT [IdArticuloTienda]
@@ -576,22 +577,26 @@ AS
 	WHERE Tienda.IdTienda = @IdTienda
 GO
 
-CREATE PROCEDURE ArticulosTiendaNoAgregados 
+AlTER PROCEDURE ArticulosTiendaNoAgregados 1
 @IdTienda INT
 AS
 	SELECT [IdArticulo]
+	  ,[Nombre]
       ,[Codigo]
       ,[Descripcion]
       ,[Precio]
       ,[Imagen]
       ,[Stock]
+	  ,0 AS IdArticuloTienda
+	  ,NULL AS Fecha
+	  ,0 AS IdTienda
+	  ,'' AS Sucursal
   FROM [dbo].[Articulo]
   where Articulo.IdArticulo NOT IN 
 		   (SELECT ArticuloTienda.IdArticulo
 		     FROM ArticuloTienda
 			 WHERE ArticuloTienda.IdTienda = @IdTienda)
-GO
-		   
+GO	   
 
 CREATE PROCEDURE ArticuloTiendaAdd
 @IdTienda INT,
@@ -607,11 +612,25 @@ AS
            ,GETDATE())
 GO
 
-CREATE PROCEDURE ArticuloTiendaDelete
-@IdArticuloTienda INT
-    AS
+ALTER PROCEDURE ArticuloTiendaDelete 
+@IdTienda INT,
+@IdArticulo INT
+AS
     DELETE FROM ArticuloTienda
-      WHERE IdArticuloTienda = @IdArticuloTienda
+      WHERE IdTienda = @IdTienda AND IdArticulo = @IdArticulo
 GO
 
---La direccion de cliente y tienda se agregaron de manera manual, asi mismo la imagen
+CREATE PROCEDURE LoginUser 
+@Email VARCHAR(50)
+AS
+	SELECT [IdUsuario]
+      ,[Imagen]
+      ,[Email]
+      ,[Password]
+      ,Rol.[IdRol]
+	  ,Rol.[Nombre]
+      ,[IdCliente]
+  FROM [dbo].[Usuario]
+	  INNER JOIN Rol ON Usuario.IdRol = Rol.IdRol	  
+	WHERE Email = @Email 
+GO

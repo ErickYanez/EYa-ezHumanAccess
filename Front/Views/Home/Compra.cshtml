@@ -3,10 +3,9 @@
     ViewData["Title"] = "Compra";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@if (Context.Session.GetString("Producto") == null)
+@if (Context.Session.GetString("Articulo") == null)
 {
-    <h2>Tu Carrito esta vacio</h2>
+    <h2 class="mt-5">Tu Carrito esta vacio</h2>
 
     <div class="row">
         <div class="col-md-12">
@@ -45,9 +44,8 @@ else
             <tr class="table-secondary">
                 <td style="display :none;">id</td>
                 <td>Nombre</td>
-                <td>Creditos</td>
+                <td>Descripcion</td>
                 <td>Costo</td>
-                <td style="text-align: center; vertical-align: middle;">Añadir</td>
                 <td style="text-align: center; vertical-align: middle;">Cantidad</td>
                 <td style="text-align: center; vertical-align: middle;">Quitar</td>
             </tr>
@@ -57,21 +55,20 @@ else
             {
                 <tr>
                     <td style="display :none;">@articulo.IdArticulo </td>
-                    <td>@articulo.Nombre</td>
-                    <td>@articulo.Descripcion</td>
-                    <td>@articulo.Precio</td>
+                    <td style="text-align: center; vertical-align: middle;">@articulo.Nombre</td>
+                    <td style="text-align: center; vertical-align: middle;">@articulo.Descripcion</td>
+                    <td style="text-align: center; vertical-align: middle;">$ @articulo.Precio</td>
                     <td style="text-align: center; vertical-align: middle;">@articulo.Cantidad</td>
+                    <td style="text-align: center; vertical-align: middle;"><a class="btn btn-danger " href="@Url.Action("Eliminar", "Home", new { IdArticulo = articulo.IdArticulo})"><i class="bi bi-x-circle"></i></a></td>
                 </tr>
             }
             <tr class="table-light">
-                <td>Total</td>
+                <td style ="text-align: center; vertical-align: middle;">Total</td>
+                <td></td>                
                 <td></td>
-                <td style="text-align: center; vertical-align: middle;">Mucho</td>
                 <td></td>
-                <td style="text-align: center; vertical-align: middle;">Muchos</td>
-                <td></td>
+                <td style="text-align: center; vertical-align: middle;">$ @ViewBag.total</td>
             </tr>
-
         </tbody>
     </table>
     <div class="row">
@@ -127,4 +124,3 @@ else
 
     </script>
 }
-

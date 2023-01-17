@@ -3,8 +3,7 @@
     ViewData["Title"] = "GetAll";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="container">
+<div class="container mt-5">
     <h2>Lista de Tiendas</h2>
     <hr />
 
@@ -30,7 +29,7 @@
                     <div class="container">
                         <div class="row justify-content-md-center">
                             <div class="col col-lg-2">
-                                <input type="submit" value="Buscar" class="btn btn-warning" />
+                                <input type="submit" value="Buscar" class="btn btn-success" />
                             </div>
                         </div>
                     </div>
@@ -43,7 +42,7 @@
 <div class="d-flex justify-content-around">
     <div class="row mt-5">
         <table class="table table-striped" id="tblCliente">
-            <thead class="table-dark">
+            <thead class="table-success">
                 <tr>
                     <th>
                         IdTienda
@@ -63,7 +62,7 @@
                 </tr>
             </thead>
 
-            <tbody class="table-info">
+            <tbody class="table-light">
                 @foreach (Entitys.Tienda tienda in Model.Tiendas)
                 {
                     <tr>
