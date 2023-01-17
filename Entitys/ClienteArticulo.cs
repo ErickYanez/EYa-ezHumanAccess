@@ -13,5 +13,6 @@ namespace Entitys
         public Entitys.Articulo Articulo { get; set; }
         public string Fecha { get; set; }
         public List<Object> ClienteArticulos { get; set; }
+        public decimal Total { get; set; }
     }
 }

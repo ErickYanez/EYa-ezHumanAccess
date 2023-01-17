@@ -16,6 +16,7 @@ public partial class ArticuloTiendum
     public virtual Articulo? IdArticuloNavigation { get; set; }
 
     public virtual Tiendum? IdTiendaNavigation { get; set; }
+
     public string Sucursal { get; set; }
     public string Nombre { get; set; }
     public int Codigo { get; set; }

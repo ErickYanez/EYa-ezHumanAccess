@@ -22,4 +22,6 @@ public partial class Articulo
     public virtual ICollection<ArticuloTiendum> ArticuloTienda { get; } = new List<ArticuloTiendum>();
 
     public virtual ICollection<ClienteArticulo> ClienteArticulos { get; } = new List<ClienteArticulo>();
+    public int IdTienda { get; set; }
+    public string Sucursal { get; set; }
 }

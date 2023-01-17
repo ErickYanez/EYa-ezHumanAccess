@@ -12,6 +12,7 @@ public partial class Tiendum
     public virtual ICollection<ArticuloTiendum> ArticuloTienda { get; } = new List<ArticuloTiendum>();
 
     public virtual ICollection<DireccionTiendum> DireccionTienda { get; } = new List<DireccionTiendum>();
+
     public int IdDireccionTienda { get; set; }
     public string Calle { get; set; }
     public string NumeroInterior { get; set; }

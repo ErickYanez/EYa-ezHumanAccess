@@ -16,5 +16,8 @@ namespace Entitys
         public string Imagen { get; set; }
         public int Stock { get; set; }
         public List<Object> Articulos { get; set; }
+        public Entitys.Tienda Tienda { get; set; }
+        public int Cantidad { get; set; }
+        public int SubTotal { get; set; }
     }
 }

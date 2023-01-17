@@ -1,0 +1,108 @@
+﻿@model Entitys.ArticuloTienda
+@{
+    ViewData["Title"] = "ArticuloTiendaNoAsignadas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Lista de Articulos no asignados</h2>
+    <hr />
+    <div class="row">
+        <div class="form-group">
+            @Html.HiddenFor(model => model.Tienda.IdTienda)
+        </div>
+
+        <div style="float:left">
+            <div class="col-5">
+                @Html.LabelFor(model => model.Tienda.Sucursal, "Nombre de la tienda")
+
+                @Html.TextBoxFor(model => model.Tienda.Sucursal, new { @class = "form-control", @ReadOnly="true" })
+            </div>
+
+        </div>    
+    </div>
+</div>
+ @using (Html.BeginForm("Add", "ArticuloTienda", FormMethod.Post, new { enctype = "multipart/form-data", id = "form_materias" }))
+ {
+    <input id="IdTienda" name="IdTienda" type="hidden" value="@Model.Tienda.IdTienda">
+    <div class="d-flex justify-content-around">
+        <div class="row mt-5">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>
+                            Seleccionar
+                        </th>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Codigo
+                        </th>
+                        <th>
+                            Descripcion
+                        </th>
+                        <th>
+                            Precio
+                        </th>
+                        <th>
+                            Imagen
+                        </th>
+                        <th>
+                            Stock
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-info">
+                    @foreach (Entitys.ArticuloTienda articuloTienda in Model.ArticuloTiendas)
+                    {
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="@articuloTienda.Articulo.IdArticulo" name="IdArticulo">
+                                </div>
+                            </td>
+                            <td>
+                                @articuloTienda.Articulo.Nombre
+                            </td>
+                            <td>
+                                @articuloTienda.Articulo.Codigo
+                            </td>
+                            <td>
+                                @articuloTienda.Articulo.Descripcion
+                            </td>
+                            <td>
+                                @articuloTienda.Articulo.Precio
+                            </td>
+                            <td>
+                                @if (articuloTienda.Articulo.Imagen != null)
+                                {
+                                    var imagenSRC = $"data:image;base64,{articuloTienda.Articulo.Imagen}";
+                                    <img src='@imagenSRC' height='150px' width='150px'>
+                                }
+                                else
+                                {
+                                    <img src="~/Image/sin logo.jpg" height='150px' width='150px'>
+
+                                }
+                            </td>
+                            <td>
+                                @articuloTienda.Articulo.Stock
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-2">
+                <input type="submit" value="Guardar" class="btn btn-success" />
+                @Html.ActionLink("Regresar", "ArticuloTiendaAsignadas", "ArticuloTienda", new { IdTienda = Model.Tienda.IdTienda }, htmlAttributes: new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+}
+

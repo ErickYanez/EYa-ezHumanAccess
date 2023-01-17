@@ -9,8 +9,23 @@
     <hr />
 
     <div class="row">
+        <div class="form-group">
+
+            @Html.HiddenFor(model => model.Tienda.IdTienda)
+
+        </div>
+
+        <div style="float:left">
+            <div class="col-5">
+                @Html.LabelFor(model => model.Tienda.Sucursal, "Nombre de la tienda")
+
+                @Html.TextBoxFor(model => model.Tienda.Sucursal, new { @class = "form-control", @ReadOnly="true" })
+            </div>
+
+        </div>
+
         <div style="float:right">
-            <a class="btn btn-success" href="@Url.Action("ArticuloTiendaNoAsignadas", "ArticuloTienda", new { IdArticulo = Model.Tienda.IdTienda})">Agregar</a>
+            @Html.ActionLink("Agregar", "ArticuloTiendaNoAsignadas", "ArticuloTienda", new { IdTienda = Model.Tienda.IdTienda }, htmlAttributes: new { @class = "btn btn-success" })
         </div>
     </div>
 </div>
@@ -82,7 +97,7 @@
                             @articuloTienda.Articulo.Stock
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-danger bi-trash" href="@Url.Action("Delete", "ArticuloTienda", new { IdArticuloTienda = articuloTienda.IdArticuloTienda})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
+                            <a class="btn btn-danger bi-trash" href="@Url.Action("Delete", "ArticuloTienda", new { IdTienda = articuloTienda.Tienda.IdTienda, IdArticulo = articuloTienda.Articulo.IdArticulo})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a>
                         </td>
                     </tr>
                 }
