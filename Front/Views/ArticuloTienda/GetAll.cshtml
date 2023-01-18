@@ -15,7 +15,7 @@
                     <th>
                         Articulos
                     </th>
-                    <th>
+                    <th style="display :none;">
                         IdTienda
                     </th>
                     <th>
@@ -34,7 +34,7 @@
                         <td class="text-center">
                             <a class="btn btn-primary" href="@Url.Action("ArticuloTiendaAsignadas", "ArticuloTienda", new { IdTienda = tienda.IdTienda})">Seleccionar</a>
                         </td>
-                        <td>
+                        <td style="display :none;">
                             @tienda.IdTienda
                         </td>
                         <td>

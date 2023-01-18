@@ -52,7 +52,7 @@
         <table class="table table-striped" id="tblCliente">
             <thead class="table-success">
                 <tr>
-                    <th>
+                    <th style="display :none;">
                         IdCliente
                     </th>
                     <th>
@@ -86,7 +86,7 @@
                 @foreach (Entitys.Cliente cliente in Model.Clientes)
                 {
                     <tr>
-                        <td>
+                        <td  style="display :none;">
                             @cliente.IdCliente
                         </td>
                         <td>
